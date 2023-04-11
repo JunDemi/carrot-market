@@ -32,9 +32,9 @@ const Stream: NextPage = () => {
             <div className="flex relative max-w-md items-center  w-full mx-auto">
               <input
                 type="text"
-                className="shadow-sm rounded-full w-full border-gray-300 focus:ring-orange-500 focus:outline-none pr-12 focus:border-orange-500"
+                className="border border-gray-300 shadow-sm rounded-full w-full focus:ring-orange-500 focus:outline-none pr-12 focus:ring-2 focus:ring-offset-2 pl-5 py-2 mx-1"
               />
-              <div className="absolute inset-y-0 flex py-1.5 pr-1.5 right-0">
+              <div className="absolute inset-y-0 flex py-1.5 pr-2.5 right-0">
                 <button className="flex focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 items-center bg-orange-500 rounded-full px-3 hover:bg-orange-600 text-sm text-white">
                   &rarr;
                 </button>
