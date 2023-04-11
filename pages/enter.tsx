@@ -2,8 +2,9 @@ import type { NextPage } from "next";
 import { useState } from "react";
 import Button from "../components/button";
 import Input from "../components/input";
-import { cls } from "../libs/utils";
+import { cls } from "../libs/client/utils";
 import { useForm } from "react-hook-form";
+import useMutation from "@/libs/client/useMutation";
 
 interface EnterForm {
   email?: string;
@@ -11,6 +12,7 @@ interface EnterForm {
 }
 
 const Enter: NextPage = () => {
+  const [enter, { loading, data, error }] = useMutation("/api/users/enter");
   const [sub, set_sub] = useState<boolean>(false);
   const { register, handleSubmit, reset } = useForm<EnterForm>();
   const [method, setMethod] = useState<"email" | "phone">("email");
@@ -22,17 +24,9 @@ const Enter: NextPage = () => {
     reset();
     setMethod("phone");
   };
-  const onValid = (data:EnterForm) => {
-    set_sub(true);
-    fetch("/api/users/enter", {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json"
-      }
-    }).then(() => set_sub(false));
-  }
-
+  const onValid = (validForm: EnterForm) => {
+    enter(validForm);
+  };
   return (
     <div className="mt-16 px-4">
       <h3 className="text-3xl font-bold text-center">Enter to Carrot</h3>
@@ -64,7 +58,10 @@ const Enter: NextPage = () => {
             </button>
           </div>
         </div>
-        <form onSubmit={handleSubmit(onValid)} className="flex flex-col mt-8 space-y-4">
+        <form
+          onSubmit={handleSubmit(onValid)}
+          className="flex flex-col mt-8 space-y-4"
+        >
           {method === "email" ? (
             <Input
               register={register("email")}
