@@ -2,3 +2,4 @@
 
 - 플래닛스케일 DB와 연결하기: `pscale connect carrot-market`
 - 프리즈마 스튜디오 열기: `npx prisma studio`
+- 프리즈마 데이터 구조변경(DB연결되있어야함): `npx prisma db push`
