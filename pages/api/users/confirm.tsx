@@ -1,13 +1,9 @@
 import client from "@/libs/server/client";
-import withHandler from "@/libs/server/withHandler";
+import withHandler, { ResponseType } from "@/libs/server/withHandler";
 import { NextApiRequest, NextApiResponse } from "next";
 import { withApiSession } from "@/libs/server/withSession";
 
-export interface ResponseType {
-  ok: boolean;
-  [key: string]: any;
-}
-async function Handler(
+async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseType>
 ) {
@@ -32,4 +28,8 @@ async function Handler(
   });
 }
 
-export default withApiSession(withHandler("POST", Handler));
+export default withApiSession(withHandler({
+  method: "POST",
+  handler,
+  isPrivate: false
+}));
