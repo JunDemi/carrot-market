@@ -21,11 +21,13 @@ interface ItemDetailResponse {
 
 const ItemDetail: NextPage = () => {
   const router = useRouter();
-  const { data } = useSWR<ItemDetailResponse>(
+  const { data, mutate } = useSWR<ItemDetailResponse>(
     router.query.id ? `/api/products/${router.query.id}` : null
   );
   const [toggleFav] = useMutation(`/api/products/${router.query.id}/fav`);
   const onFavClick = () => {
+    if(!data) return;
+    mutate({...data, isLiked: !data.isLiked}, false);
     toggleFav({});
   };
   return (
@@ -39,10 +41,10 @@ const ItemDetail: NextPage = () => {
                 <div className="w-12 h-12 rounded-full bg-slate-300" />
                 <div>
                   <p className="text-sm font-medium text-gray-700">
-                    {data.product.user.name}
+                    {data?.product?.user?.name}
                   </p>
                   <Link
-                    href={`users/profiles/${data.product.user.id}`}
+                    href={`users/profiles/${data?.product?.user?.id}`}
                     className="text-xs font-medium text-gray-500"
                   >
                     View profile &rarr;
@@ -73,7 +75,7 @@ const ItemDetail: NextPage = () => {
                     {data.isLiked ? (
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5"
+                        className="h-6 w-6"
                         viewBox="0 0 20 20"
                         fill="currentColor"
                       >
@@ -108,7 +110,7 @@ const ItemDetail: NextPage = () => {
                   Similar items
                 </h2>
                 <div className=" mt-6 grid grid-cols-2 gap-4">
-                  {data?.relatedProducts.map((R_product) => (
+                  {data?.relatedProducts?.map((R_product) => (
                     <div key={R_product.id}>
                       <div className="h-56 w-full mb-4 bg-slate-300" />
                       <h3 className="text-gray-700 -mb-1">{R_product.name}</h3>
